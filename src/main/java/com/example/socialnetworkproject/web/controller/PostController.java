@@ -77,8 +77,9 @@ public class PostController {
 
 
     @PostMapping("/add-comment/{id}")
-    public String addComment(@PathVariable Long id, @RequestParam String comment){
-        this.postService.saveComment(id, comment);
+    public String addComment(@PathVariable Long id, @RequestParam String comment, Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        this.postService.saveComment(id, user.getId(), comment);
         return "redirect:/posts";
     }
 

@@ -67,9 +67,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post saveComment(Long id, String comment) {
+    public Post saveComment(Long id, Long userId, String comment) {
         Post post = this.postRepository.findById(id).orElseThrow(()-> new PostNotFoundException(id));
-        Comment comment1 = this.commentRepository.save(new Comment(comment));
+        User user = this.userRepository.findById(userId).orElseThrow(()-> new UserNotFound("User not found!"));
+        Comment comment1 = this.commentRepository.save(new Comment(user, comment));
         post.getComments().add(comment1);
         return this.postRepository.save(post);
     }

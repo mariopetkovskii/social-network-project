@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Post> postList;
 
+
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
@@ -51,7 +53,13 @@ public class User implements UserDetails {
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
         this.role = Role.ROLE_USER;
+        this.postList = new ArrayList<>();
     }
+
+    public String getFullName(){
+        return name + " " + surname;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -10,7 +10,7 @@
             <div class="d-flex justify-content-center">
                 <div class="card" style="width: 60rem;">
                     <div class="card-body post">
-                        <h5 class="card-title">Posted by: <th:block th:text="${post.user.getName()}"></th:block></h5>
+                        <h5 class="card-title">Posted by: <th:block th:text="${post.user.getFullName()}"></th:block></h5>
                         <h6 class="card-subtitle mb-2 text-muted">28/3/2022 3:21AM</h6>
                         <p class="card-text">
                             <th:block th:text="${post.getDescription()}"></th:block>
@@ -45,6 +45,7 @@
                             </form>
                         </th:block>
                         <p class="card-text" th:each="comment : ${post.getComments()}">
+                            Comment by: <th:block th:text="${comment.user.getFullName()}"></th:block>
                             <th:block th:text="${comment.getComment()}"></th:block>
                         </p>
 
