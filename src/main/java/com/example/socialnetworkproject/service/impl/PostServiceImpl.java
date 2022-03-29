@@ -3,10 +3,14 @@ package com.example.socialnetworkproject.service.impl;
 
 import com.example.socialnetworkproject.model.Comment;
 import com.example.socialnetworkproject.model.Post;
+import com.example.socialnetworkproject.model.User;
 import com.example.socialnetworkproject.model.exceptions.PostNotFoundException;
+import com.example.socialnetworkproject.model.exceptions.UserNotFound;
 import com.example.socialnetworkproject.repository.CommentRepository;
 import com.example.socialnetworkproject.repository.PostRepository;
+import com.example.socialnetworkproject.repository.UserRepository;
 import com.example.socialnetworkproject.service.PostService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +21,12 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
-    public PostServiceImpl(PostRepository postRepository, CommentRepository commentRepository) {
+    public PostServiceImpl(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -29,8 +35,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<Post> save(String description) {
-        return Optional.of(this.postRepository.save(new Post(description)));
+    public Optional<Post> save(Long id, String description) {
+        User user = this.userRepository.findById(id).orElseThrow(()-> new UserNotFound("User not found!"));
+        return Optional.of(this.postRepository.save(new Post(user, description)));
     }
 
     @Override

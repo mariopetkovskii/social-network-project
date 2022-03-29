@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,6 +31,9 @@ public class User implements UserDetails {
     private LocalDate dateOfBirth;
 
     private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Post> postList;
 
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;

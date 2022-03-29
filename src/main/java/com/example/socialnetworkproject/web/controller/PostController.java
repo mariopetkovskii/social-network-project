@@ -2,7 +2,9 @@ package com.example.socialnetworkproject.web.controller;
 
 
 import com.example.socialnetworkproject.model.Post;
+import com.example.socialnetworkproject.model.User;
 import com.example.socialnetworkproject.service.PostService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,11 +58,13 @@ public class PostController {
     @PostMapping("/add")
     public String savePost(
             @RequestParam(required = false) Long id,
-            @RequestParam String description) {
+            @RequestParam String description,
+            Authentication authentication) {
         if (id != null) {
             this.postService.edit(id, description);
         } else {
-            this.postService.save(description);
+            User user = (User) authentication.getPrincipal();
+            this.postService.save(user.getId(), description);
         }
         return "redirect:/posts";
     }

@@ -20,12 +20,21 @@ public class Post {
     @OneToMany
     public List<Comment> comments;
 
+    @ManyToOne
+    private User user;
+
     public Post() {
     }
 
-    public Post(String description) {
+    public Post(User user, String description) {
         this.description = description;
         this.likes = 0;
         this.comments = new ArrayList<>();
+        this.user = user;
     }
+
+    public String getNameOfUser(){
+        return user.getName();
+    }
+
 }
