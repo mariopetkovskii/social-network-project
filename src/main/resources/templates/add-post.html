@@ -1,0 +1,32 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">WEB PROGRAMMING SOCIAL NETWORK</h1>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <form action="/posts/add" method="POST">
+                    <input id="id" type="hidden" name="id" th:value="(${post} != null ? ${post.getId()} : '')">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text"
+                               class="form-control"
+                               id="description"
+                               name="description"
+                               th:value="(${post} != null ? ${post.getDescription()} : '')"
+                               required
+                               placeholder="Enter desc...">
+                    </div>
+
+                    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                    <a type="button" class="btn btn-primary" href="/posts">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
