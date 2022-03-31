@@ -31,7 +31,13 @@ public class User implements UserDetails {
 
     private LocalDate dateOfBirth;
 
+    private String city;
+
     private Role role;
+
+    private String bio;
+
+    private String url;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Post> postList;
@@ -49,13 +55,16 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, String name, String surname, LocalDate dateOfBirth) {
+    public User(String username, String password, String name, String surname, LocalDate dateOfBirth, String city) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
         this.role = Role.ROLE_USER;
+        this.city = city;
+        this.bio = "";
+        this.url = "";
         this.postList = new ArrayList<>();
     }
 

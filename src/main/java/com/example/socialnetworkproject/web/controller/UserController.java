@@ -24,7 +24,11 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage(Model model){
+    public String getLoginPage(Model model, @RequestParam(required = false) String success){
+        if (success != null && !success.isEmpty()) {
+            model.addAttribute("isSuccess", true);
+            model.addAttribute("success", success);
+        }
         model.addAttribute("bodyContent", "login");
         return "master-template";
     }
@@ -61,10 +65,11 @@ public class UserController {
                            @RequestParam String repeatedPassword,
                            @RequestParam String name,
                            @RequestParam String surname,
-                           @RequestParam String localDate) {
+                           @RequestParam String localDate,
+                           @RequestParam String city) {
         try{
             LocalDate localDateParsed = LocalDate.parse(localDate);
-            this.userService.register(username, password, repeatedPassword, name, surname, localDateParsed);
+            this.userService.register(username, password, repeatedPassword, name, surname, localDateParsed, city);
             return "redirect:/login";
         } catch (InvalidArgumentsException | PasswordsDoNotMatchException exception) {
             return "redirect:/register?error=" + exception.getMessage();
