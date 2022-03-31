@@ -23,6 +23,9 @@ public class Post {
     @ManyToOne
     private User user;
 
+    @ManyToMany
+    private List<User> likedBy;
+
     public Post() {
     }
 
@@ -31,6 +34,7 @@ public class Post {
         this.likes = 0;
         this.comments = new ArrayList<>();
         this.user = user;
+        this.likedBy = new ArrayList<>();
     }
 
     public String getNameOfUser(){

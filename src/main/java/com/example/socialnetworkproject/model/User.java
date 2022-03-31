@@ -36,6 +36,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Post> postList;
 
+    @ManyToMany
+    private List<Post> postsLiked;
+
 
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;

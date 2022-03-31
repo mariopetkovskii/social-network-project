@@ -10,7 +10,6 @@ import com.example.socialnetworkproject.repository.CommentRepository;
 import com.example.socialnetworkproject.repository.PostRepository;
 import com.example.socialnetworkproject.repository.UserRepository;
 import com.example.socialnetworkproject.service.PostService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,38 +57,22 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<Post> like(Long id) {
+    public Optional<Post> like(Long id, Long userId) {
         Post post = this.postRepository.findById(id).orElseThrow(()-> new PostNotFoundException(id));
-        Integer likes = post.getLikes();
-        likes = likes + 1;
-        post.setLikes(likes);
+        User user = this.userRepository.findById(userId).orElseThrow(()-> new UserNotFound("User not found!"));
+        if(!post.getLikedBy().contains(user)){
+            post.getLikedBy().add(user);
+            Integer likes = post.getLikes();
+            likes = likes + 1;
+            post.setLikes(likes);
+        }
+        else {
+            post.getLikedBy().remove(user);
+            Integer likes = post.getLikes();
+            likes = likes - 1;
+            post.setLikes(likes);
+        }
         return Optional.of(this.postRepository.save(post));
     }
 
-    @Override
-    public Post saveComment(Long id, Long userId, String comment) {
-        Post post = this.postRepository.findById(id).orElseThrow(()-> new PostNotFoundException(id));
-        User user = this.userRepository.findById(userId).orElseThrow(()-> new UserNotFound("User not found!"));
-        Comment comment1 = this.commentRepository.save(new Comment(user, comment));
-        post.getComments().add(comment1);
-        return this.postRepository.save(post);
-    }
-
-
-    @Override
-    public Optional<Comment> editComment(Long id, String comment) {
-        Comment comment1 = this.commentRepository.findById(id).orElseThrow(()-> new PostNotFoundException(id));
-        comment1.setComment(comment);
-        return Optional.of(this.commentRepository.save(comment1));
-    }
-
-    @Override
-    public Optional<Comment> findCommentById(Long id) {
-        return this.commentRepository.findById(id);
-    }
-
-    @Override
-    public void deleteCommentById(Long id) {
-        this.commentRepository.deleteById(id);
-    }
 }

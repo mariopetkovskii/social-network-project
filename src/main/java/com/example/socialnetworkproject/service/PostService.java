@@ -12,10 +12,8 @@ public interface PostService {
     Optional<Post> edit(Long id, String description);
     Optional<Post> findById(Long id);
     void deleteById(Long id);
-    Optional<Post> like(Long id);
 
-    Post saveComment(Long id, Long userId, String comment);
-    Optional<Comment> editComment(Long id, String comment);
-    Optional<Comment> findCommentById(Long id);
-    void deleteCommentById(Long id);
+    Optional<Post> like(Long id, Long userId);
+
+
 }

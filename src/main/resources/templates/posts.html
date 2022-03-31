@@ -10,7 +10,9 @@
             <div class="d-flex justify-content-center">
                 <div class="card" style="width: 60rem;">
                     <div class="card-body post">
-                        <h5 class="card-title">Posted by: <th:block th:text="${post.user.getFullName()}"></th:block></h5>
+                        <h5 class="card-title">Posted by:
+                            <th:block th:text="${post.user.getFullName()}"></th:block>
+                        </h5>
                         <h6 class="card-subtitle mb-2 text-muted">28/3/2022 3:21AM</h6>
                         <p class="card-text">
                             <th:block th:text="${post.getDescription()}"></th:block>
@@ -25,6 +27,18 @@
                                 <i class="fa fa-trash">Like post</i>
                             </button>
                         </form>
+<!--                        <div th:each="likedBy : ${post.getLikedBy()}">-->
+<!--                            <th:block th:if="${likedBy.getUsername() != #request.getRemoteUser()}">-->
+<!--                                <form th:action="@{'/posts/like/{id}' (id=${post.getId()})}"-->
+<!--                                      th:method="POST">-->
+<!--                                    <button type="submit"-->
+<!--                                            class="btn btn-sm btn-info delete-post">-->
+<!--                                        <i class="fa fa-trash">Dislike post</i>-->
+<!--                                    </button>-->
+<!--                                </form>-->
+<!--                            </th:block>-->
+
+<!--                        </div>-->
                         <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"
                               th:method="DELETE">
                             <button type="submit"
@@ -45,7 +59,8 @@
                             </form>
                         </th:block>
                         <p class="card-text" th:each="comment : ${post.getComments()}">
-                            Comment by: <th:block th:text="${comment.user.getFullName()}"></th:block>
+                            Comment by:
+                            <th:block th:text="${comment.user.getFullName()}"></th:block>
                             <th:block th:text="${comment.getComment()}"></th:block>
                         </p>
 
@@ -73,13 +88,13 @@
     <!--                            <td th:text="${post.getLikes()}"></td>-->
     <!--                            <td class="text-right">-->
     <!--                                <th:block>-->
-<!--                                        <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"-->
-<!--                                              th:method="DELETE">-->
-<!--                                            <button type="submit"-->
-<!--                                                    class="btn btn-sm btn-danger delete-post">-->
-<!--                                                <i class="fa fa-trash">Delete</i>-->
-<!--                                            </button>-->
-<!--                                        </form>-->
+    <!--                                        <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"-->
+    <!--                                              th:method="DELETE">-->
+    <!--                                            <button type="submit"-->
+    <!--                                                    class="btn btn-sm btn-danger delete-post">-->
+    <!--                                                <i class="fa fa-trash">Delete</i>-->
+    <!--                                            </button>-->
+    <!--                                        </form>-->
     <!--                                </th:block>-->
     <!--                                <th:block>-->
     <!--                                    <a th:href="@{'/posts/edit-form/{id}' (id=${post.getId()})}"-->

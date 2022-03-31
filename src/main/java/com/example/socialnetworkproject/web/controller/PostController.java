@@ -70,16 +70,9 @@ public class PostController {
     }
 
     @PostMapping("/like/{id}")
-    public String addLike(@PathVariable Long id){
-        this.postService.like(id);
-        return "redirect:/posts";
-    }
-
-
-    @PostMapping("/add-comment/{id}")
-    public String addComment(@PathVariable Long id, @RequestParam String comment, Authentication authentication){
+    public String addLike(@PathVariable Long id, Authentication authentication){
         User user = (User) authentication.getPrincipal();
-        this.postService.saveComment(id, user.getId(), comment);
+        this.postService.like(id, user.getId());
         return "redirect:/posts";
     }
 
