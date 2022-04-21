@@ -25,27 +25,48 @@
                             <th:block th:text="${post.getDescription()}"></th:block>
                         </p>
                         <p class="card-text">
-                            Likes:
-                            <th:block th:text="${post.getLikes()}"></th:block>
+                            <a href="" data-toggle="modal" data-target="#exampleModal">Likes:
+                                <th:block th:text="${post.getLikes()}"></th:block>
+                            </a>
                         <form th:action="@{'/posts/like/{id}' (id=${post.getId()})}"
                               th:method="POST">
                             <button type="submit"
                                     class="btn btn-sm btn-info delete-post">
+
                                 <i class="fa fa-trash">Like post</i>
+
                             </button>
                         </form>
-                        <!--                        <div th:each="likedBy : ${post.getLikedBy()}">-->
-                        <!--                            <th:block th:if="${likedBy.getUsername() != #request.getRemoteUser()}">-->
-                        <!--                                <form th:action="@{'/posts/like/{id}' (id=${post.getId()})}"-->
-                        <!--                                      th:method="POST">-->
-                        <!--                                    <button type="submit"-->
-                        <!--                                            class="btn btn-sm btn-info delete-post">-->
-                        <!--                                        <i class="fa fa-trash">Dislike post</i>-->
-                        <!--                                    </button>-->
-                        <!--                                </form>-->
-                        <!--                            </th:block>-->
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Likes</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ul class="list-group" th:each="liked : ${post.getLikedBy()}">
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div>
+                                                        <th:block th:text="${liked.getFullName()}"></th:block>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <!--                        </div>-->
                         <th:block th:if="${#request.getRemoteUser() == post.user.getUsername()}">
                             <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"
                                   th:method="DELETE">
@@ -55,7 +76,9 @@
                                 </button>
                             </form>
                         </th:block>
+
                         </p>
+                        Comments:
                         <th:block>
                             <form th:action="@{'/posts/add-comment/{id}' (id=${post.getId()})}"
                                   th:method="POST">
@@ -78,10 +101,10 @@
                         <ul class="list-group" th:each="comment : ${post.getComments()}">
                             <li class="list-group-item">
                                 <div class="row">
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <th:block th:text="${comment.user.getFullName()}"></th:block>
                                     </div>
-                                    <div class="col-10">
+                                    <div class="col-9">
                                         <th:block th:text="${comment.getComment()}"></th:block>
                                     </div>
                                 </div>

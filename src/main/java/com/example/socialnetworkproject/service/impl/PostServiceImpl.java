@@ -11,6 +11,7 @@ import com.example.socialnetworkproject.repository.PostRepository;
 import com.example.socialnetworkproject.repository.UserRepository;
 import com.example.socialnetworkproject.service.PostService;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +35,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<Post> save(Long id, String description) {
-        User user = this.userRepository.findById(id).orElseThrow(()-> new UserNotFound("User not found!"));
+    public Optional<Post> save(String username, String description) {
+        User user = this.userRepository.findByUsername(username).orElseThrow(()-> new UserNotFound("User not found!"));
         return Optional.of(this.postRepository.save(new Post(user, description)));
     }
 
@@ -57,22 +58,28 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<Post> like(Long id, Long userId) {
+    public Optional<Post> like(Long id, String username) {
         Post post = this.postRepository.findById(id).orElseThrow(()-> new PostNotFoundException(id));
-        User user = this.userRepository.findById(userId).orElseThrow(()-> new UserNotFound("User not found!"));
+        User user = this.userRepository.findByUsername(username).orElseThrow(()-> new UserNotFound("User not found!"));
         if(!post.getLikedBy().contains(user)){
-            post.getLikedBy().add(user);
+            List<User> likedBy = post.getLikedBy();
+            likedBy.add(user);
             Integer likes = post.getLikes();
             likes = likes + 1;
             post.setLikes(likes);
+            post.setLikedBy(likedBy);
         }
         else {
-            post.getLikedBy().remove(user);
+            List<User> likedBy = post.getLikedBy();
+            likedBy.remove(user);
             Integer likes = post.getLikes();
             likes = likes - 1;
             post.setLikes(likes);
+            post.setLikedBy(likedBy);
         }
         return Optional.of(this.postRepository.save(post));
     }
+
+
 
 }

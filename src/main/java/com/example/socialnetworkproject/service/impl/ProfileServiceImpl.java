@@ -21,8 +21,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Optional<User> editInfo(Long id, String name, String surname, String bio, String url, String city) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found!"));
+    public Optional<User> editInfo(String username, String name, String surname, String bio, String url, String city) {
+        User user = this.userRepository.findByUsername(username).orElseThrow(() -> new UserNotFound("User not found!"));
         user.setBio(bio);
         user.setName(name);
         user.setSurname(surname);
@@ -33,20 +33,20 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Optional<User> editUsername(Long id, String username) {
-        if (username==null || username.isEmpty())
+    public Optional<User> editUsername(String username, String newUsername) {
+        if (newUsername==null || newUsername.isEmpty())
             throw new InvalidUsernameOrPasswordException();
-        if(this.userRepository.findByUsername(username).isPresent())
-            throw new UsernameAlreadyExistsException(username);
-        User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found!"));
-        user.setUsername(username);
+        if(this.userRepository.findByUsername(newUsername).isPresent())
+            throw new UsernameAlreadyExistsException(newUsername);
+        User user = this.userRepository.findByUsername(username).orElseThrow(() -> new UserNotFound("User not found!"));
+        user.setUsername(newUsername);
         this.userRepository.save(user);
         return Optional.of(user);
     }
 
     @Override
-    public Optional<User> changePassword(Long id, String oldPassword, String newPassword, String repeatedNewPassword) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found!"));
+    public Optional<User> changePassword(String username, String oldPassword, String newPassword, String repeatedNewPassword) {
+        User user = this.userRepository.findByUsername(username).orElseThrow(() -> new UserNotFound("User not found!"));
         boolean isOldAndNewPasswordSame = this.passwordEncoder.matches(oldPassword, user.getPassword());
         if(isOldAndNewPasswordSame){
             if (!newPassword.equals(repeatedNewPassword))
@@ -60,5 +60,10 @@ public class ProfileServiceImpl implements ProfileService {
             throw new OldPasswordException();
         }
         return Optional.of(user);
+    }
+
+    @Override
+    public User getUser(String username) {
+        return this.userRepository.findByUsername(username).orElseThrow(() -> new UserNotFound("User not found!"));
     }
 }

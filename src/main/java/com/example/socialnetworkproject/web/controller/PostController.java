@@ -21,7 +21,7 @@ public class PostController {
     }
 
     @GetMapping
-    public String getPostPage(@RequestParam(required = false) String error, Model model) {
+    public String getPostPage(@RequestParam(required = false) String error, Model model, Authentication authentication) {
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
@@ -64,7 +64,7 @@ public class PostController {
             this.postService.edit(id, description);
         } else {
             User user = (User) authentication.getPrincipal();
-            this.postService.save(user.getId(), description);
+            this.postService.save(user.getUsername(), description);
         }
         return "redirect:/posts";
     }
@@ -72,7 +72,7 @@ public class PostController {
     @PostMapping("/like/{id}")
     public String addLike(@PathVariable Long id, Authentication authentication){
         User user = (User) authentication.getPrincipal();
-        this.postService.like(id, user.getId());
+        this.postService.like(id, user.getUsername());
         return "redirect:/posts";
     }
 

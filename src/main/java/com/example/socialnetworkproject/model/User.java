@@ -18,9 +18,6 @@ import java.util.List;
 @Table(name="sn_users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String username;
 
     private String password;
@@ -44,6 +41,12 @@ public class User implements UserDetails {
 
     @ManyToMany
     private List<Post> postsLiked;
+
+    @ManyToMany
+    private List<User> followers;
+
+    @ManyToMany
+    private List<User> followingUsers;
 
 
     private boolean isAccountNonExpired = true;

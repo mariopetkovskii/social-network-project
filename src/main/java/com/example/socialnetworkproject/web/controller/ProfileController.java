@@ -2,19 +2,13 @@ package com.example.socialnetworkproject.web.controller;
 
 
 import com.example.socialnetworkproject.model.User;
-import com.example.socialnetworkproject.model.exceptions.InvalidUsernameException;
-import com.example.socialnetworkproject.model.exceptions.OldPasswordException;
-import com.example.socialnetworkproject.model.exceptions.PasswordsDoNotMatchException;
-import com.example.socialnetworkproject.model.exceptions.UsernameAlreadyExistsException;
+import com.example.socialnetworkproject.model.exceptions.*;
 import com.example.socialnetworkproject.service.ProfileService;
 import com.example.socialnetworkproject.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,18 +45,18 @@ public class ProfileController {
                            Authentication authentication,
                            HttpServletRequest request){
         User user = (User) authentication.getPrincipal();
-        this.profileService.editInfo(user.getId(), name, surname, bio, url, city);
+        this.profileService.editInfo(user.getUsername(), name, surname, bio, url, city);
         request.getSession().invalidate();
         return "redirect:/login?success=" + "Your changes has been updated, please login!";
     }
 
     @PostMapping("/editUsername")
-    public String editUsername(@RequestParam String username,
+    public String editUsername(@RequestParam String newUsername,
                                Authentication authentication,
                                HttpServletRequest request){
         try{
             User user = (User) authentication.getPrincipal();
-            this.profileService.editUsername(user.getId(),username);
+            this.profileService.editUsername(user.getUsername(),newUsername);
             request.getSession().invalidate();
             return "redirect:/login?success=" + "Your username has been updated, please login!";
         } catch (UsernameAlreadyExistsException | InvalidUsernameException exception){
@@ -78,12 +72,29 @@ public class ProfileController {
                                  HttpServletRequest request){
         try{
             User user = (User) authentication.getPrincipal();
-            this.profileService.changePassword(user.getId(),oldPassword, newPassword, repeatedNewPassword);
+            this.profileService.changePassword(user.getUsername(), oldPassword, newPassword, repeatedNewPassword);
             request.getSession().invalidate();
             return "redirect:/login?success=" + "Your password has been updated, please login!";
         } catch (PasswordsDoNotMatchException | OldPasswordException exception){
             return "redirect:/profile?error=" + exception.getMessage();
         }
+    }
+
+    @GetMapping("/{username}")
+    public String getUserAccount(@RequestParam(required = false) String error, @PathVariable String username, Model model) {
+        if (error != null && !error.isEmpty()) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", error);
+        }
+        try{
+            User user = this.profileService.getUser(username);
+            model.addAttribute("userAccountInfo", user);
+            model.addAttribute("bodyContent", "userAccount");
+            return "master-template";
+        } catch (UserNotFound userNotFound){
+            return "redirect:/home?error=" + userNotFound.getMessage();
+        }
 
     }
+
 }

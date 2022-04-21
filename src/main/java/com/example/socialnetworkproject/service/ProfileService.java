@@ -6,12 +6,13 @@ import java.util.Optional;
 
 public interface ProfileService {
 
-    Optional<User> editInfo(Long id, String name, String surname, String bio, String url, String city);
+    Optional<User> editInfo(String username, String name, String surname, String bio, String url, String city);
 
-    Optional<User> editUsername(Long id, String username);
+    Optional<User> editUsername(String username, String newUsername);
 
-    Optional<User> changePassword(Long id, String oldPassword, String newPassword, String repeatedNewPassword);
+    Optional<User> changePassword(String username, String oldPassword, String newPassword, String repeatedNewPassword);
 
+    User getUser(String username);
 
 
 }
