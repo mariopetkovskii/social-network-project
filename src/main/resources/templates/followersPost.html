@@ -1,0 +1,107 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+    <div th:if="${followersPostList.size() > 0}">
+        <div th:each="post : ${followersPostList}">
+            <div class="d-flex justify-content-center">
+                <div class="card" style="width: 60rem;">
+                    <div class="card-body post">
+                        <h5 class="card-title">Posted by:
+                            <th:block th:text="${post.user.getFullName()}"></th:block>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">28/3/2022 3:21AM</h6>
+                        <p class="card-text">
+                            <th:block th:text="${post.getDescription()}"></th:block>
+                        </p>
+                        <p class="card-text">
+                            <a href="" data-toggle="modal" data-target="#exampleModal">Likes:
+                                <th:block th:text="${post.getLikes()}"></th:block>
+                            </a>
+                        <form th:action="@{'/posts/like/{id}' (id=${post.getId()})}"
+                              th:method="POST">
+                            <button type="submit"
+                                    class="btn btn-sm btn-info delete-post">
+
+                                <i class="fa fa-trash">Like post</i>
+
+                            </button>
+                        </form>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Likes</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ul class="list-group" th:each="liked : ${post.getLikedBy()}">
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div>
+                                                        <th:block th:text="${liked.getFullName()}"></th:block>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <th:block th:if="${#request.getRemoteUser() == post.user.getUsername()}">
+                            <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"
+                                  th:method="DELETE">
+                                <button type="submit"
+                                        class="btn btn-sm btn-danger delete-post">
+                                    <i class="fa fa-trash">Delete</i>
+                                </button>
+                            </form>
+                        </th:block>
+
+                        </p>
+                        Comments:
+                        <th:block>
+                            <form th:action="@{'/posts/add-comment/{id}' (id=${post.getId()})}"
+                                  th:method="POST">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" placeholder="Write a comment..."
+                                               id="comment"
+                                               name="comment">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button type="submit"
+                                                class="btn btn-sm btn-info delete-post">
+                                            <i class="fa fa-trash">Comment</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+                        <br>
+                        <ul class="list-group" th:each="comment : ${post.getComments()}">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <th:block th:text="${comment.user.getFullName()}"></th:block>
+                                    </div>
+                                    <div class="col-9">
+                                        <th:block th:text="${comment.getComment()}"></th:block>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
