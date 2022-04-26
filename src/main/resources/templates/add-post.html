@@ -11,14 +11,23 @@
                 <form action="/posts/add" method="POST">
                     <input id="id" type="hidden" name="id" th:value="(${post} != null ? ${post.getId()} : '')">
                     <div class="form-group">
-                        <label for="description">Description</label>
-                        <input type="text"
-                               class="form-control"
-                               id="description"
-                               name="description"
-                               th:value="(${post} != null ? ${post.getDescription()} : '')"
-                               required
-                               placeholder="Enter desc...">
+                        <label for="description">Write something...</label>
+<!--                        <input type="text"-->
+<!--                               class="form-control"-->
+<!--                               id="description"-->
+<!--                               name="description"-->
+<!--                               th:value="(${post} != null ? ${post.getDescription()} : '')"-->
+<!--                               required-->
+<!--                               placeholder="Enter desc...">-->
+                        <textarea rows="4"
+                                  cols="50"
+                                  class="form-control"
+                                  id="description"
+                                  name="description"
+                                  th:value="(${post} != null ? ${post.getDescription()} : '')"
+                                  required
+                                  placeholder="Enter desc..."></textarea>
+
                     </div>
 
                     <button id="submit" type="submit" class="btn btn-primary">Submit</button>

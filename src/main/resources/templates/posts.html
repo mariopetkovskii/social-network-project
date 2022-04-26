@@ -1,172 +1,226 @@
 <div xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-    <section class="jumbotron text-center">
+    <section class="jumbotron">
         <div class="container">
-            <h1 class="jumbotron-heading">WEB PROGRAMMING SOCIAL NETWORK</h1>
-            <h3 class="jumbotron-heading">All posts</h3>
+            <div class="text-center">
+                <h1 class="jumbotron-heading">WEB PROGRAMMING SOCIAL NETWORK</h1>
+                <h3 class="jumbotron-heading">All posts</h3>
+            </div>
             <div class="d-flex justify-content-center">
                 <div class="row">
-                    <a href="/posts/add-form" class="btn btn-block btn-dark add-post-btn">
-                        Add new post
+
+                    <a href="/postfollowers" class="btn btn-block btn-dark add-post-btn">
+                        Followers posts
                     </a>
                 </div>
             </div>
         </div>
-    </section>
-    <div th:if="${posts.size() > 0}">
-        <div th:each="post : ${posts}">
-            <div class="d-flex justify-content-center">
-                <div class="card" style="width: 60rem;">
-                    <div class="card-body post">
-                        <h5 class="card-title">Posted by:
-                            <th:block th:text="${post.user.getFullName()}"></th:block>
-                        </h5>
-                        <h6 class="card-subtitle mb-2 text-muted">28/3/2022 3:21AM</h6>
-                        <p class="card-text">
-                            <th:block th:text="${post.getDescription()}"></th:block>
-                        </p>
-                        <p class="card-text">
-                            <a href="" data-toggle="modal" data-target="#exampleModal">Likes:
-                                <th:block th:text="${post.getLikes()}"></th:block>
-                            </a>
-                        <form th:action="@{'/posts/like/{id}' (id=${post.getId()})}"
-                              th:method="POST">
-                            <button type="submit"
-                                    class="btn btn-sm btn-info delete-post">
 
-                                <i class="fa fa-trash">Like post</i>
+        <br/>
 
-                            </button>
-                        </form>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Likes</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <ul class="list-group" th:each="liked : ${post.getLikedBy()}">
-                                            <li class="list-group-item">
-                                                <div class="row">
-                                                    <div>
-                                                        <th:block th:text="${liked.getFullName()}"></th:block>
+        <div class="container">
+            <form action="/posts/add" method="POST">
+                <input id="id" type="hidden" name="id" th:value="(${post} != null ? ${post.getId()} : '')">
+                <div class="form-group">
+                    <label for="description">Write something...</label>
+                    <!--                        <input type="text"-->
+                    <!--                               class="form-control"-->
+                    <!--                               id="description"-->
+                    <!--                               name="description"-->
+                    <!--                               th:value="(${post} != null ? ${post.getDescription()} : '')"-->
+                    <!--                               required-->
+                    <!--                               placeholder="Enter desc...">-->
+                    <textarea rows="4"
+                              cols="50"
+                              class="form-control"
+                              id="description"
+                              name="description"
+                              th:value="(${post} != null ? ${post.getDescription()} : '')"
+                              required
+                              placeholder="Enter desc..."></textarea>
+
+                </div>
+
+                <button id="submit" type="submit" class="btn btn-primary">Post</button>
+
+                <br/>
+
+            </form>
+        </div>
+
+        <hr/>
+
+        <div th:if="${posts.size() > 0}">
+            <div th:each="post : ${posts}">
+                <div class="d-flex justify-content-center">
+                    <div class="card" style="width: 60rem;">
+                        <div class="card-body post">
+                            <h5 class="card-title">Posted by:
+                                <th:block th:text="${post.user.getFullName()}"></th:block>
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">28/3/2022 3:21AM</h6>
+                            <p class="card-text">
+                                <th:block th:text="${post.getDescription()}"></th:block>
+                            </p>
+                            <p class="card-text">
+                                <a href="" data-toggle="modal" data-target="#exampleModal">Likes:
+                                    <th:block th:text="${post.getLikes()}"></th:block>
+                                </a>
+                            <form th:action="@{'/posts/like/{id}' (id=${post.getId()})}"
+                                  th:method="POST">
+                                <button type="submit"
+                                        class="btn btn-sm btn-info delete-post">
+
+                                    <i class="fa fa-trash">Like post</i>
+
+                                </button>
+                            </form>
+                            <br/>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Likes</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ul class="list-group" th:each="liked : ${post.getLikedBy()}">
+                                                <li class="list-group-item">
+                                                    <div class="row">
+                                                        <div>
+                                                            <th:block th:text="${liked.getFullName()}"></th:block>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                        </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <th:block th:if="${#request.getRemoteUser() == post.user.getUsername()}">
+                                <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"
+                                      th:method="DELETE">
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger delete-post">
+                                        <i class="fa fa-trash">Delete</i>
+                                    </button>
+                                </form>
+                            </th:block>
+
+                            </p>
+                            Comments:
+                            <th:block>
+                                <form th:action="@{'/posts/add-comment/{id}' (id=${post.getId()})}"
+                                      th:method="POST">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <input class="form-control" type="text" placeholder="Write a comment..."
+                                                   id="comment"
+                                                   name="comment">
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-info delete-post">
+                                                <i class="fa fa-trash">Comment</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </th:block>
+                            <br>
+                            <div th:if="${post.getComments().size() > 0}">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-3">Comment by:</div>
+                                            <div class="col-9">Comment:</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <ul class="list-group" th:each="comment : ${post.getComments()}">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <a th:href="@{/profile/{username}(username=${comment.user.getUsername()})}">
+                                                <th:block th:text="${comment.user.getFullName()}"></th:block>
+                                            </a>
+                                        </div>
+                                        <div class="col-9">
+                                            <th:block th:text="${comment.getComment()}"></th:block>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
                         </div>
-
-                        <th:block th:if="${#request.getRemoteUser() == post.user.getUsername()}">
-                            <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"
-                                  th:method="DELETE">
-                                <button type="submit"
-                                        class="btn btn-sm btn-danger delete-post">
-                                    <i class="fa fa-trash">Delete</i>
-                                </button>
-                            </form>
-                        </th:block>
-
-                        </p>
-                        Comments:
-                        <th:block>
-                            <form th:action="@{'/posts/add-comment/{id}' (id=${post.getId()})}"
-                                  th:method="POST">
-                                <div class="row">
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" placeholder="Write a comment..."
-                                               id="comment"
-                                               name="comment">
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <button type="submit"
-                                                class="btn btn-sm btn-info delete-post">
-                                            <i class="fa fa-trash">Comment</i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </th:block>
-                        <br>
-                        <ul class="list-group" th:each="comment : ${post.getComments()}">
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-3">
-                                        <th:block th:text="${comment.user.getFullName()}"></th:block>
-                                    </div>
-                                    <div class="col-9">
-                                        <th:block th:text="${comment.getComment()}"></th:block>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
                     </div>
                 </div>
+                <br>
             </div>
-            <br>
         </div>
-    </div>
 
-    <!--    <div class="container mb-4">-->
-    <!--        <div class="row">-->
-    <!--            <div class="col-12" th:if="${posts.size() > 0}">-->
-    <!--                <div class="table-responsive">-->
-    <!--                    <table class="table table-striped">-->
-    <!--                        <thead>-->
-    <!--                        <tr>-->
-    <!--                            <th scope="col">Description</th>-->
-    <!--                            <th scope="col">Likes:</th>-->
-    <!--                        </tr>-->
-    <!--                        </thead>-->
-    <!--                        <tbody>-->
-    <!--                        <tr th:each="post : ${posts}" class="post">-->
-    <!--                            <td th:text="${post.getDescription()}"></td>-->
-    <!--                            <td th:text="${post.getLikes()}"></td>-->
-    <!--                            <td class="text-right">-->
-    <!--                                <th:block>-->
-    <!--                                        <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"-->
-    <!--                                              th:method="DELETE">-->
-    <!--                                            <button type="submit"-->
-    <!--                                                    class="btn btn-sm btn-danger delete-post">-->
-    <!--                                                <i class="fa fa-trash">Delete</i>-->
-    <!--                                            </button>-->
-    <!--                                        </form>-->
-    <!--                                </th:block>-->
-    <!--                                <th:block>-->
-    <!--                                    <a th:href="@{'/posts/edit-form/{id}' (id=${post.getId()})}"-->
-    <!--                                       class="btn btn-sm btn-info edit-post">-->
-    <!--                                        <i class="fa fa-trash">Edit</i>-->
-    <!--                                    </a>-->
-    <!--                                </th:block>-->
-    <!--                                <th:block>-->
-    <!--                                    <form th:action="@{'/posts/like/{id}' (id=${post.getId()})}"-->
-    <!--                                          th:method="POST">-->
-    <!--                                        <button type="submit"-->
-    <!--                                                class="btn btn-sm btn-info delete-post">-->
-    <!--                                            <i class="fa fa-trash">Like post</i>-->
-    <!--                                        </button>-->
-    <!--                                    </form>-->
-    <!--                                </th:block>-->
-    <!--                            </td>-->
-    <!--                        </tr>-->
-    <!--                        </tbody>-->
-    <!--                    </table>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--            <div class="col mb-3">-->
+        <!--    <div class="container mb-4">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-12" th:if="${posts.size() > 0}">-->
+        <!--                <div class="table-responsive">-->
+        <!--                    <table class="table table-striped">-->
+        <!--                        <thead>-->
+        <!--                        <tr>-->
+        <!--                            <th scope="col">Description</th>-->
+        <!--                            <th scope="col">Likes:</th>-->
+        <!--                        </tr>-->
+        <!--                        </thead>-->
+        <!--                        <tbody>-->
+        <!--                        <tr th:each="post : ${posts}" class="post">-->
+        <!--                            <td th:text="${post.getDescription()}"></td>-->
+        <!--                            <td th:text="${post.getLikes()}"></td>-->
+        <!--                            <td class="text-right">-->
+        <!--                                <th:block>-->
+        <!--                                        <form th:action="@{'/posts/delete/{id}' (id=${post.getId()})}"-->
+        <!--                                              th:method="DELETE">-->
+        <!--                                            <button type="submit"-->
+        <!--                                                    class="btn btn-sm btn-danger delete-post">-->
+        <!--                                                <i class="fa fa-trash">Delete</i>-->
+        <!--                                            </button>-->
+        <!--                                        </form>-->
+        <!--                                </th:block>-->
+        <!--                                <th:block>-->
+        <!--                                    <a th:href="@{'/posts/edit-form/{id}' (id=${post.getId()})}"-->
+        <!--                                       class="btn btn-sm btn-info edit-post">-->
+        <!--                                        <i class="fa fa-trash">Edit</i>-->
+        <!--                                    </a>-->
+        <!--                                </th:block>-->
+        <!--                                <th:block>-->
+        <!--                                    <form th:action="@{'/posts/like/{id}' (id=${post.getId()})}"-->
+        <!--                                          th:method="POST">-->
+        <!--                                        <button type="submit"-->
+        <!--                                                class="btn btn-sm btn-info delete-post">-->
+        <!--                                            <i class="fa fa-trash">Like post</i>-->
+        <!--                                        </button>-->
+        <!--                                    </form>-->
+        <!--                                </th:block>-->
+        <!--                            </td>-->
+        <!--                        </tr>-->
+        <!--                        </tbody>-->
+        <!--                    </table>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <div class="col mb-3">-->
 
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+
+
+    </section>
 </div>

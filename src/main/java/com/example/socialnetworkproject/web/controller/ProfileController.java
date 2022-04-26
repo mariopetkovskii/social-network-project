@@ -3,6 +3,7 @@ package com.example.socialnetworkproject.web.controller;
 
 import com.example.socialnetworkproject.model.User;
 import com.example.socialnetworkproject.model.exceptions.*;
+import com.example.socialnetworkproject.service.FollowerService;
 import com.example.socialnetworkproject.service.ProfileService;
 import com.example.socialnetworkproject.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("/profile")
@@ -18,10 +20,12 @@ public class ProfileController {
 
     private final UserService userService;
     private final ProfileService profileService;
+    private final FollowerService followerService;
 
-    public ProfileController(UserService userService, ProfileService profileService) {
+    public ProfileController(UserService userService, ProfileService profileService, FollowerService followerService) {
         this.userService = userService;
         this.profileService = profileService;
+        this.followerService = followerService;
     }
 
     @GetMapping
@@ -81,14 +85,20 @@ public class ProfileController {
     }
 
     @GetMapping("/{username}")
-    public String getUserAccount(@RequestParam(required = false) String error, @PathVariable String username, Model model) {
+    public String getUserAccount(@RequestParam(required = false) String error, @PathVariable String username, Model model, Authentication authentication) {
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
         try{
             User user = this.profileService.getUser(username);
+            User loggedInUser = (User) authentication.getPrincipal();
             model.addAttribute("userAccountInfo", user);
+            model.addAttribute("loggedInUser", loggedInUser);
+            List<User> followers = this.followerService.allFollowers(user.getUsername());
+            List<User> followingUsers = this.followerService.allFollowingUsers(user.getUsername());
+            model.addAttribute("followers", followers);
+            model.addAttribute("followingUsers", followingUsers);
             model.addAttribute("bodyContent", "userAccount");
             return "master-template";
         } catch (UserNotFound userNotFound){

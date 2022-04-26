@@ -1,20 +1,39 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 
-
     <h5 th:text="${userAccountInfo.getFullName()}"></h5>
 
-    <th:block>
-        <form th:action="@{'/follow/{username}' (username=${userAccountInfo.getUsername()})}"
-              th:method="POST">
+
+
+        <th:block th:if="${loggedInUser.getUsername()} != ${userAccountInfo.getUsername()}">
+            <form th:action="@{'/follow/{username}' (username=${userAccountInfo.getUsername()})}"
+                  th:method="POST">
                 <div class="col-sm-1">
                     <button type="submit"
                             class="btn btn-sm btn-info">
                         <i class="fa fa-trash">Follow</i>
                     </button>
                 </div>
-        </form>
-    </th:block>
+            </form>
+        </th:block>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            Followers:
+            <ul>
+                <li th:each="follower: ${followers}"><th:block th:text="${follower.getFullName()}"/></li>
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            Following:
+            <ul>
+                <li th:each="followingUsers: ${followingUsers}"><th:block th:text="${followingUsers.getFullName()}"/></li>
+            </ul>
+        </div>
+    </div>
+
 
 
 
