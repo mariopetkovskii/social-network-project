@@ -41,7 +41,7 @@ public class FollowerController {
     public String addFriend(@PathVariable String username, Authentication authentication){
         User user = (User) authentication.getPrincipal();
         this.followerService.followUser(user.getUsername(), username);
-        return "redirect:/followers";
+        return "redirect:/profile/" + username;
     }
 
 }

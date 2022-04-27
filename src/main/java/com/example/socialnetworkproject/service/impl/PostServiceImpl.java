@@ -61,22 +61,20 @@ public class PostServiceImpl implements PostService {
     public Optional<Post> like(Long id, String username) {
         Post post = this.postRepository.findById(id).orElseThrow(()-> new PostNotFoundException(id));
         User user = this.userRepository.findByUsername(username).orElseThrow(()-> new UserNotFound("User not found!"));
+        List<User> likedBy = post.getLikedBy();
         if(!post.getLikedBy().contains(user)){
-            List<User> likedBy = post.getLikedBy();
             likedBy.add(user);
             Integer likes = post.getLikes();
             likes = likes + 1;
             post.setLikes(likes);
-            post.setLikedBy(likedBy);
         }
         else {
-            List<User> likedBy = post.getLikedBy();
             likedBy.remove(user);
             Integer likes = post.getLikes();
             likes = likes - 1;
             post.setLikes(likes);
-            post.setLikedBy(likedBy);
         }
+        post.setLikedBy(likedBy);
         return Optional.of(this.postRepository.save(post));
     }
 

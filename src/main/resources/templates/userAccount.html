@@ -1,8 +1,27 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 
-    <h5 th:text="${userAccountInfo.getFullName()}"></h5>
+    <section class="jumbotron">
+        <div class="container">
+            <div class="text-center">
+                <h1 class="jumbotron-heading">WEB PROGRAMMING SOCIAL NETWORK</h1>
+                <h3 class="jumbotron-heading">Followers page</h3>
+            </div>
+        </div>
 
+
+        Name: <h5 th:text="${userAccountInfo.getFullName()}"></h5>
+        Username: <h5 th:text="${userAccountInfo.getUsername()}"></h5>
+        City: <h5 th:text="${userAccountInfo.getCity()}"></h5>
+        Date of Birth: <h5 th:text="${userAccountInfo.getDateOfBirth()}"></h5>
+        <p>Followers: <a href="#followers" data-toggle="modal">
+            <th:block th:text="${userAccountInfo.getFollowers().size()}"></th:block>
+        </a></p>
+        <p>
+            Following: <a href="#followingUsers" data-toggle="modal">
+            <th:block th:text="${userAccountInfo.getFollowingUsers().size()}"></th:block>
+        </a>
+        </p>
 
 
         <th:block th:if="${loggedInUser.getUsername()} != ${userAccountInfo.getUsername()}">
@@ -17,24 +36,56 @@
             </form>
         </th:block>
 
-
-    <div class="row">
-        <div class="col-md-6">
-            Followers:
-            <ul>
-                <li th:each="follower: ${followers}"><th:block th:text="${follower.getFullName()}"/></li>
-            </ul>
-        </div>
-
-        <div class="col-md-6">
-            Following:
-            <ul>
-                <li th:each="followingUsers: ${followingUsers}"><th:block th:text="${followingUsers.getFullName()}"/></li>
-            </ul>
+    </section>
+    <div class="modal fade" id="followers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Followers:
+                    <ul>
+                        <li th:each="follower: ${followers}">
+                            <th:block th:text="${follower.getFullName()}"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
 
-
+    <div class="modal fade" id="followingUsers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Following:
+                    <ul>
+                        <li th:each="followingUsers: ${followingUsers}">
+                            <th:block th:text="${followingUsers.getFullName()}"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
