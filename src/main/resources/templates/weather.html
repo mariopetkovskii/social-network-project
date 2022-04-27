@@ -1,0 +1,49 @@
+<section class="jumbotron">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="jumbotron-heading">WEB PROGRAMMING SOCIAL NETWORK</h1>
+            <h3 class="jumbotron-heading">Weather in your city</h3>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-4 offset-md-3">
+                City: <h6 th:text="${items.getLocation().getCity()}"></h6>
+                Temperature: <h5 th:text="${items.getCurrent().getTemp_c()}"></h5>
+                Local time: <h6 th:text="${items.getLocation().getLocaltime()}"></h6>
+                Feels like: <h6 th:text="${items.getCurrent().getFeelslike_c()}"></h6>
+                Humidity: <h6 th:text="${items.getCurrent().getHumidity()}"></h6>
+                Cloudiness: <h6 th:text="${items.getCurrent().getCloud()}"></h6>
+                Precipitation: <h6 th:text="${items.getCurrent().getPrecip_mm()}"></h6>
+            </div>
+            <div class="col-md-5">
+                Air Quality: <h6 th:text="${items.getCurrent().getAir_quality().getAirQuality()}"></h6>
+                No2: <h6 th:text="${items.getCurrent().getAir_quality().getNo2}"></h6>
+                Co: <h6 th:text="${items.getCurrent().getAir_quality().getCo()}"></h6>
+                O3: <h6 th:text="${items.getCurrent().getAir_quality().getO3()}"></h6>
+                So2: <h6 th:text="${items.getCurrent().getAir_quality().getSo2()}"></h6>
+                PM2_5: <h6 th:text="${items.getCurrent().getAir_quality().getPm2_5()}"></h6>
+                PM10: <h6 th:text="${items.getCurrent().getAir_quality().getPm10()}"></h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <h6 class="text-info" th:text="${items.getCurrent().getAir_quality().AirQualityInfo()}"></h6>
+        <br/>
+
+    </div>
+    <div class="d-flex justify-content-center">
+        <form method="post" action="/weather">
+            <label for="city" class="sr-only">City</label>
+            <input type="text" id="city" name="city" class="form-control rounded" placeholder="Search city"
+                   required>
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+            <div th:if="${hasError}">
+                <div th:text="${error}" class="text-danger"></div>
+            </div>
+        </form>
+    </div>
+
+
+</section>
