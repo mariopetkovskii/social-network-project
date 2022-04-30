@@ -30,7 +30,7 @@ public class FollowersPostServiceImpl implements FollowersPostService {
     public List<Post> findAllPostByUsername(String username) {
         User user = this.userRepository.
                 findByUsername(username).orElseThrow(() -> new UserNotFound(username));
-        List<User> users = this.followersRepository.findAllByFollowingUsers(user);
+        List<User> users = this.followersRepository.findAllByFollowers(user);
         List<Post> posts = this.postRepository.findAllByUser(users);
 
         return posts;

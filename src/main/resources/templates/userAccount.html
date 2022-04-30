@@ -9,33 +9,44 @@
             </div>
         </div>
 
+        <div class="row py-2">
+            <div class="col-md-4 offset-1">
+                Name: <h5 th:text="${userAccountInfo.getFullName()}"></h5>
+                Username: <h5 th:text="${userAccountInfo.getUsername()}"></h5>
+                City: <h5 th:text="${userAccountInfo.getCity()}"></h5>
+                Date of Birth: <h5 th:text="${userAccountInfo.getDateOfBirth()}"></h5>
+                <p>Followers: <a href="#followers" data-toggle="modal">
+                    <th:block th:text="${userAccountInfo.getFollowers().size()}"></th:block>
+                </a></p>
+                <p>
+                    Following: <a href="#followingUsers" data-toggle="modal">
+                    <th:block th:text="${userAccountInfo.getFollowingUsers().size()}"></th:block>
+                </a>
+                </p>
 
-        Name: <h5 th:text="${userAccountInfo.getFullName()}"></h5>
-        Username: <h5 th:text="${userAccountInfo.getUsername()}"></h5>
-        City: <h5 th:text="${userAccountInfo.getCity()}"></h5>
-        Date of Birth: <h5 th:text="${userAccountInfo.getDateOfBirth()}"></h5>
-        <p>Followers: <a href="#followers" data-toggle="modal">
-            <th:block th:text="${userAccountInfo.getFollowers().size()}"></th:block>
-        </a></p>
-        <p>
-            Following: <a href="#followingUsers" data-toggle="modal">
-            <th:block th:text="${userAccountInfo.getFollowingUsers().size()}"></th:block>
-        </a>
-        </p>
 
-
-        <th:block th:if="${loggedInUser.getUsername()} != ${userAccountInfo.getUsername()}">
-            <form th:action="@{'/follow/{username}' (username=${userAccountInfo.getUsername()})}"
-                  th:method="POST">
-                <div class="col-sm-1">
-                    <button type="submit"
-                            class="btn btn-sm btn-info">
-                        <i class="fa fa-trash">Follow</i>
-                    </button>
+                <th:block th:if="${loggedInUser.getUsername()} != ${userAccountInfo.getUsername()}">
+                    <form th:action="@{'/follow/{username}' (username=${userAccountInfo.getUsername()})}"
+                          th:method="POST">
+                        <div class="col-sm-1">
+                            <button type="submit"
+                                    class="btn btn-sm btn-info">
+                                <i class="fa fa-trash">Follow</i>
+                            </button>
+                        </div>
+                    </form>
+                </th:block>
+            </div>
+            <div class="col-md-6">
+                Bio:
+                <th:block th:text="${userAccountInfo.getBio()}"></th:block>
+                <br/>
+                <div class="py-5">
+                    URL:
+                    <th:block th:text="${userAccountInfo.getUrl()}"></th:block>
                 </div>
-            </form>
-        </th:block>
-
+            </div>
+        </div>
     </section>
     <div class="modal fade" id="followers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">

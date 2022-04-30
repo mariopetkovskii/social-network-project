@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface FollowersRepository extends JpaRepository<User, String> {
     List<User> findAllByFollowingUsers(User user);
+    List<User> findAllByFollowers(User user);
 }
