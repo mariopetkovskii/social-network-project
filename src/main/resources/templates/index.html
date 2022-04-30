@@ -326,24 +326,27 @@
 <header xmlns:th="http://www.thymeleaf.org">
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="/">Social-network</a>
+      <a class="navbar-brand" href="/home">SN</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
               aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav m-auto">
           <li class="nav-item m-auto">
-            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link active" href="/home">Home</a>
           </li>
-          <li class="nav-item m-auto">
+          <li class="nav-item">
             <a class="nav-link" href="/posts">Newsfeed</a>
           </li>
-          <li class="nav-item m-auto">
+          <li class="nav-item">
             <a class="nav-link" href="/">Chat Room</a>
           </li>
-          <li class="nav-item m-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/followers">Followers</a>
+          </li>
+          <li class="nav-item">
             <div class="dropdown show">
               <a class="dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -352,29 +355,30 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <a class="dropdown-item" href="/weather">Weather</a>
                 <a class="dropdown-item" href="/nearby">Nearby users</a>
-                <a class="dropdown-item" href="/followers">Followers</a>
               </div>
             </div>
           </li>
         </ul>
-
-
         <ul class="nav navbar-nav navbar-right">
+          <div class="dropdown show" sec:authorize="isAuthenticated()">
+            <a class="dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink1"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Profile
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item nav-link text-dark" href="/profile">
+                <th:block th:if="${#request.getRemoteUser() != null}"
+                          th:text="${#request.getRemoteUser()}"></th:block>
+              </a>
+              <a class="dropdown-item btn btn-light btn-sm" href="/logout">
+                Logout
+              </a>
+            </div>
+          </div>
 
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a class="nav-link" href="/profile">
-              <th:block th:if="${#request.getRemoteUser() != null}"
-                        th:text="${#request.getRemoteUser()}"></th:block>
-            </a>
-          </li>
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a class="btn btn-light btn-sm ml-3" href="/logout">
-              <i class="fa fa-shopping-cart"></i> Logout
-            </a>
-          </li>
           <li class="nav-item" sec:authorize="!isAuthenticated()">
-            <a class="btn btn-light btn-sm ml-3" href="/login">
-              <i class="fa fa-shopping-cart"></i> Login
+            <a class="btn btn-light" href="/login">
+              Login
             </a>
           </li>
         </ul>
@@ -382,6 +386,7 @@
     </div>
   </nav>
 </header>
+
 
 
 <div id="username-page">
